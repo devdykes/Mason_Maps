@@ -7,7 +7,7 @@ import java.net.URL;
 public class ChatGPTClient {
     public static String chatGPT(String prompt) {
         String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = "";
+        String apiKey = System.getenv("API_KEY");;
         String model = "gpt-3.5-turbo";
  
         try {
