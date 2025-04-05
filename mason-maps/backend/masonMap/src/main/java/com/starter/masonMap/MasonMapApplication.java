@@ -14,6 +14,11 @@ public class MasonMapApplication {
 	}
 	@GetMapping("/")
 	public String index() {
-		return "Greetings from Spring Boot!";
+		try{
+		return ChatGPTClient.chatGPT("Say Something");}
+		catch(Exception e){
+			return e.getMessage();
+		}
 	}
+
 }
