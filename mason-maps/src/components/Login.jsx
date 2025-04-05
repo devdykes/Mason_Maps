@@ -37,9 +37,11 @@ const Login = ({ onLogin }) => {
       console.log("Logging in with:", username, password);
       const data = res.data;
       localStorage.setItem('token', data.token);
-      window.location.reload(false);
-      delay(1000);
+      localStorage.setItem('username', username);
       onLogin(data.token);
+      delay(1000);
+      window.location.reload(false);
+
     } catch (err) {
       console.error('Login error:', err);
       alert('Login failed');
