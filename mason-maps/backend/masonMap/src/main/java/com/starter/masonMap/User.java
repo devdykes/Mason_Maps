@@ -32,7 +32,7 @@ public class User {
     }
 
     public Schedule getSchedule(){
-        return schedule.get(0);
+        return schedule.get(schedule.size()-1);
     }
     
     
