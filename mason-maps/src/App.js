@@ -9,6 +9,7 @@ function App() {
   // Check if token already exists in localStorage
   useEffect(() => {
     const savedToken = localStorage.getItem('token');
+    console.log(token);
     if (savedToken) {
       setToken(savedToken);
     }
