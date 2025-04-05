@@ -44,8 +44,9 @@ const Scheduler = ({ token }) => {
         JSON.stringify({ user, pdf: extractedText }),
         { headers: { 'Content-Type': 'application/json' } }
       );
-      
+
       alert("Schedule uploaded successfully.");
+      window.location.reload();
     } catch (err) {
       console.error("Upload error:", err);
       alert("Something went wrong during upload.");
@@ -97,14 +98,6 @@ const Scheduler = ({ token }) => {
         {pdfFile && <p>Uploaded: {pdfFile.name}</p>}
         {pdfFile && <button onClick={handleUploadSubmit}>Submit Extracted Text</button>}
 
-        {extractedText && (
-          <>
-            <h4>Preview of Extracted Text:</h4>
-            <pre style={{ maxHeight: '200px', overflow: 'auto', whiteSpace: 'pre-wrap' }}>
-              {extractedText}
-            </pre>
-          </>
-        )}
       </div>
 
       {/* Right Panel */}
