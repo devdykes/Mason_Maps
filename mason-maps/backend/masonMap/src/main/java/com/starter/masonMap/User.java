@@ -27,6 +27,13 @@ public class User {
         this.user = user;
         this.password =  password;
     }
+
+    public Schedule getSchedule(){
+        return schedule;
+    }
+    public void setSchedule(Schedule schedule){
+        this.schedule = schedule;
+    }
     
 
 

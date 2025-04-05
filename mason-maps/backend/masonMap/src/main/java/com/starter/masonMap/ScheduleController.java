@@ -23,6 +23,12 @@ public class ScheduleController {
     private ScheduleService scheduleService;
     @PostMapping("/create")
     public ResponseEntity<Schedule> registerSchedule(@RequestBody Map<String, String> schedule){
-        return new ResponseEntity<Schedule>(scheduleService.createSchedule(schedule.get("pdf")),HttpStatus.CREATED);
+        return new ResponseEntity<Schedule>(scheduleService.createSchedule(schedule.get("pdf"),schedule.get("user")),HttpStatus.CREATED);
     }
+    @GetMapping("/get")
+    public ResponseEntity<Schedule> getSchedule(@RequestBody Map<String, String> schedule){
+        return new ResponseEntity<Schedule>(scheduleService.getSchedule(schedule.get("user")),HttpStatus.OK);
+    }
+
+    
 }

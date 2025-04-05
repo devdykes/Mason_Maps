@@ -24,7 +24,7 @@ public class UserService {
        User newUser=this.userRepository.insert(new User(user, password));
 
        return newUser;
-}       
+    }       
     public User checkUser(String user, String password ){
         if(this.userRepository.findByUser(user).isPresent()){
             User userFound=this.userRepository.findByUser(user).get();

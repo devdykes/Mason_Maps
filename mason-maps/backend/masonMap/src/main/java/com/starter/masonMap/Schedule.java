@@ -19,4 +19,7 @@ public class Schedule {
 
     private List<Course> schedule;
 
+    public Schedule(String pdf) {
+        this.schedule = schedule;
+    }
 }
