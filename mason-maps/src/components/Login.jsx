@@ -1,10 +1,28 @@
-import api from "../api/axiosConfig"
-
 import React, { useState } from 'react';
+import api from "../api/axiosConfig";
+import Signup from './Signup';
 
-const Login = ({ onLogin }) => { 
+import './Login.css'
+
+const Login = ({ onLogin }) => {
+
+  const [color, setColor] = useState('lightblue');
+
+  React.useEffect(() => {
+    document.body.style.backgroundColor = color;
+    const intervalId = setInterval(() => {
+      setColor((prevColor) => (prevColor === 'lightblue'));
+    }, 0);
+    return () => clearInterval(intervalId);
+  }, [color]);
+
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showSignup, setShowSignup] = useState(false);
+
+  function delay(time) {
+    return new Promise(resolve => setTimeout(resolve, time));
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,41 +34,53 @@ const Login = ({ onLogin }) => {
           headers: { 'Content-Type': 'application/json' }
         }
       );
-      console.log(username + " " + password);
-      console.log(res.data);
-
+      console.log("Logging in with:", username, password);
       const data = res.data;
-      console.log(data);
       localStorage.setItem('token', data.token);
       window.location.reload(false);
+      delay(1000);
       onLogin(data.token);
-
-      
     } catch (err) {
       console.error('Login error:', err);
       alert('Login failed');
     }
   };
 
+  if (showSignup) {
+    return <Signup onDone={() => setShowSignup(false)} />;
+  }
+
   return (
-    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', margin: 'auto' }}>
-      <h2>Login</h2>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        required
-      />
-      <button type="submit">Login</button>
-    </form>
+    <div className="backgroundlogin"> 
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', width: '300px', margin: 'auto' }}>
+        <h1 className = "headerformat">Mason Maps</h1>
+        <div className="backgroundImage"> </div>
+        <br />
+        <input className = "textboxsize"
+          type="text"
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+          
+        />
+        <input className = "textboxsize"
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+          
+        />
+        <br />
+        <button  type="submit">Login</button>
+        <button type="button" onClick={() => setShowSignup(true)} style={{ marginTop: '1rem' }}>
+        Sign Up
+      </button>
+        
+      </form>    
+    </div>
+
   );
 };
 
