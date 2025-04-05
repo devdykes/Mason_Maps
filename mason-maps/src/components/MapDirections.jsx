@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
 
 const containerStyle = {
@@ -11,30 +11,48 @@ const center = {
   lng: -77.27
 };
 
-const origin = { lat: 38.833423, lng: -77.306465 }; 
-const destination = { lat: 38.829418, lng: -77.307644 };
-
 const MapDirections = () => {
   const [directions, setDirections] = useState(null);
+  const [currLocation, setCurrLocation] = useState(null);
 
-  const handleMapLoad = (map) => {
-    const directionsService = new window.google.maps.DirectionsService();
-
-    directionsService.route(
-      {
-        origin,
-        destination,
-        travelMode: window.google.maps.TravelMode.WALKING
+  const getLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setCurrLocation({ latitude, longitude });
+        console.log('Latitude:', latitude, 'Longitude:', longitude);
       },
-      (result, status) => {
-        if (status === 'OK') {
-          setDirections(result);
-        } else {
-          console.error('Error fetching directions:', status);
-        }
+      (error) => {
+        console.error('Error fetching geolocation:', error);
+        alert('Error fetching geolocation');
       }
     );
   };
+
+  useEffect(() => {
+    if (currLocation) {
+      const directionsService = new window.google.maps.DirectionsService();
+
+      directionsService.route(
+        {
+          origin: { lat: currLocation.latitude, lng: currLocation.longitude },
+          destination: { lat: 38.829418, lng: -77.307644 },
+          travelMode: window.google.maps.TravelMode.WALKING
+        },
+        (result, status) => {
+          if (status === 'OK') {
+            setDirections(result);
+          } else {
+            console.error('Error fetching directions:', status);
+          }
+        }
+      );
+    }
+  }, [currLocation]);
+
+  useEffect(() => {
+    getLocation();
+  }, []);
 
   return (
     <LoadScript googleMapsApiKey="AIzaSyBuFtafeZFSxUruU-nLvUSnRo3TXbGpIW0">
@@ -42,7 +60,6 @@ const MapDirections = () => {
         mapContainerStyle={containerStyle}
         center={center}
         zoom={11}
-        onLoad={handleMapLoad}
       >
         {directions && <DirectionsRenderer directions={directions} />}
       </GoogleMap>
