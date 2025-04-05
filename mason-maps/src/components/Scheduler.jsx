@@ -44,12 +44,8 @@ const Scheduler = ({ token }) => {
         JSON.stringify({ user, pdf: extractedText }),
         { headers: { 'Content-Type': 'application/json' } }
       );
-
-      if (res.status === 200) {
-        alert("Schedule uploaded successfully.");
-      } else {
-        alert("Upload failed.");
-      }
+      
+      alert("Schedule uploaded successfully.");
     } catch (err) {
       console.error("Upload error:", err);
       alert("Something went wrong during upload.");
