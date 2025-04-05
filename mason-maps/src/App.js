@@ -4,16 +4,11 @@ import ScheduleView from './components/Scheduler';
 import MapView from './components/MapDirections';
 
 function App() {
-  const [token, setToken] = useState(null);
+  const [token, setToken] = useState(() => localStorage.getItem('token'));
 
-  // Check if token already exists in localStorage
   useEffect(() => {
-    const savedToken = localStorage.getItem('token');
-    console.log(token);
-    if (savedToken) {
-      setToken(savedToken);
-    }
-  }, []);
+    console.log("Token updated:", token);
+  }, [token]);
 
   if (!token) {
     return <Login onLogin={setToken} />;
@@ -21,6 +16,21 @@ function App() {
 
   return (
     <div className="App" style={{ display: 'flex', height: '100vh' }}>
+      {/* Logout Button */}
+      <button onClick={() => {
+        localStorage.removeItem('token');
+        setToken(null);
+      }} style={{
+        position: 'absolute',
+        top: 10,
+        right: 10,
+        zIndex: 1000,
+        padding: '0.5rem 1rem'
+      }}>
+        Log Out
+      </button>
+
+      {/* Layout */}
       <div style={{ flex: 1, padding: '1rem', overflowY: 'auto' }}>
         <ScheduleView token={token} />
       </div>
