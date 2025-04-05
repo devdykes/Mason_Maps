@@ -20,9 +20,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ScheduleController {
     
     @Autowired
-    private UserService userService;
+    private ScheduleService scheduleService;
     @PostMapping("/create")
-    public ResponseEntity<User> registerUser(@RequestBody Map<String,String> user){
-        return new ResponseEntity<User>(userService.createUser(user.get("user"),user.get("password")),HttpStatus.CREATED);
+    public ResponseEntity<Schedule> registerSchedule(@RequestBody Map<String, String> schedule){
+        return new ResponseEntity<Schedule>(scheduleService.createSchedule(schedule.get("pdf")),HttpStatus.CREATED);
     }
 }
