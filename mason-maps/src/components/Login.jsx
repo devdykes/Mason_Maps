@@ -2,21 +2,6 @@ import api from "../api/axiosConfig"
 
 import React, { useState } from 'react';
 
-const AuthContext = React.createContext()
-
-export function AuthProvider(props) {
-  const [authUser, setAuthUser] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-
-  const value = {
-    authUser,
-    setAuthUser,
-    isLoggedIn,
-    setIsLoggedIn
-  }
-}
-
-
 const Login = ({ onLogin }) => { 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -34,10 +19,12 @@ const Login = ({ onLogin }) => {
       console.log(username + " " + password);
       console.log(res.data);
 
-      const data = await res.data;
+      const data = res.data;
       console.log(data);
       localStorage.setItem('token', data.token);
+      window.location.reload(false);
       onLogin(data.token);
+
       
     } catch (err) {
       console.error('Login error:', err);
