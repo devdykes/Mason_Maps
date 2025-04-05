@@ -12,13 +12,4 @@ public interface UserRepository extends MongoRepository<User,ObjectId>{
 
     Optional<User>findByUser(String user);
 
-
-    
-
-
-
-
-    
-   
-
 }
