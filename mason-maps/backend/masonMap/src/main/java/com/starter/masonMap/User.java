@@ -28,6 +28,7 @@ public class User {
     public User(String user, String password){
         this.user = user;
         this.password =  password;
+        this.schedule = List.of(new Schedule(""));
     }
 
     public Schedule getSchedule(){
