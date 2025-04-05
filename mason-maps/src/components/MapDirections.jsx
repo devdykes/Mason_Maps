@@ -12,6 +12,17 @@ const center = {
 };
 
 const MapDirections = () => {
+
+  const [color, setColor] = useState('lightblue');
+
+  React.useEffect(() => {
+    document.body.style.backgroundColor = color;
+    const intervalId = setInterval(() => {
+      setColor((prevColor) => (prevColor === 'lightblue'));
+    }, 0);
+    return () => clearInterval(intervalId);
+  }, [color]);
+  
   const [directions, setDirections] = useState(null);
   const [currLocation, setCurrLocation] = useState(null);
 

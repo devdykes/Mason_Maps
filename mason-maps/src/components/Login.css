@@ -1,0 +1,35 @@
+.backgroundlogin {
+    height: 40rem;
+    width: 25%;
+    background: #e2f0f9;
+    display: flex;
+    flex-direction: column;
+    margin: 5rem auto;
+    padding: 1rem;
+    text-align: center;
+    color: rgb(3, 2, 2);
+}
+.headerformat {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.textboxsize {
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.backgroundImage {
+    background-image: url('./gmucampuspicture.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 300px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
