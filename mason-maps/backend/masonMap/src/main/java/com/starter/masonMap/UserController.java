@@ -22,6 +22,7 @@ public class UserController {
     
     @Autowired
     private UserService userService;
+  
     @PostMapping("/register")
     public ResponseEntity<User> registerUser(@RequestBody Map<String,String> user){
         return new ResponseEntity<User>(userService.createUser(user.get("user"),user.get("password")),HttpStatus.CREATED);
@@ -32,5 +33,4 @@ public class UserController {
 
         return new ResponseEntity<User>(userService.checkUser(user.get("user"),user.get("password")),HttpStatus.OK);
     }
-
-    }
+}
