@@ -24,6 +24,6 @@ public class Course {
     private double location;
     private int timeHour; //store in military time to avoid AM PM errors
     private int timeMin;
-
+    
     private List<String> date;
 }
