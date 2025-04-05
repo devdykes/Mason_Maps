@@ -1,13 +1,7 @@
 package com.starter.masonMap;
 
-import java.util.List;
-
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 
 
@@ -15,7 +9,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 public class UserService {
     @Autowired
     private UserRepository userRepository;
-    @Autowired
    
 
    
@@ -23,7 +16,7 @@ public class UserService {
 
 
     public User createUser(String user, String password) {
-       if(this.userRepository.findByUsername(user).isPresent()){
+       if(this.userRepository.findByUser(user).isPresent()){
         throw new RuntimeException("User already exists");
        }
 
@@ -33,8 +26,8 @@ public class UserService {
        return newUser;
 }       
     public User checkUser(String user, String password ){
-        if(this.userRepository.findByUsername(user).isPresent()){
-            User userFound=this.userRepository.findByUsername(user).get();
+        if(this.userRepository.findByUser(user).isPresent()){
+            User userFound=this.userRepository.findByUser(user).get();
              if (password.equals(userFound.getPassword())) {
                 return userFound;
             }
