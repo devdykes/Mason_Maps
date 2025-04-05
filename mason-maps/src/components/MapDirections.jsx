@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
+import ClassInfo from './ClassInfo';
 
 const containerStyle = {
   width: '100%',
@@ -74,6 +75,9 @@ const MapDirections = () => {
       >
         {directions && <DirectionsRenderer directions={directions} />}
       </GoogleMap>
+      <div className="class-info-panel">
+        <ClassInfo />
+      </div>
     </LoadScript>
   );
 };
