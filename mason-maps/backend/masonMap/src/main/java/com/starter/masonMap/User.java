@@ -1,6 +1,8 @@
 package com.starter.masonMap;
 
 
+import java.util.List;
+
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -21,7 +23,7 @@ public class User {
 
     private String password;
 
-    private Schedule schedule;
+    private List<Schedule> schedule;
 
     public User(String user, String password){
         this.user = user;
@@ -29,11 +31,9 @@ public class User {
     }
 
     public Schedule getSchedule(){
-        return schedule;
+        return schedule.get(0);
     }
-    public void setSchedule(Schedule schedule){
-        this.schedule = schedule;
-    }
+    
     
 
 

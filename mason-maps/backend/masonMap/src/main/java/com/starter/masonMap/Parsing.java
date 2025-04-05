@@ -8,13 +8,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ChatGPTClient {
+public class Parsing {
 
     public static String getGeminiResponse(String prompt) throws IOException {
         String apiKey = "AIzaSyD4EeiZ44V_ufZ_pqHoha9959R1j52a72c";  // 🔐 Replace with your Gemini API key
         String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
         prompt= prompt+"from the parsed text, find the meeting times of each class, categorize them by the day they meet, then get the longitude and latitude of the location where each class is held and return the data in a easy to pasre format, only give the data no other response not json format but comma separated values";
-        prompt+="Day,Course,Time,Building,Room,Latitude,Longitude. Enssure it fits that format";
+        prompt+="Day,Course,Time,Building,Room,Latitude,Longitude. Enssure it fits that format and have every new course separated by an an underscore. If the class meets on two days show both  as same class with space between the days. For example: Monday Wednesday,Course,Time,Building,Room,Latitude,Longitude_Thursday,Course,Time,Building,Room,Latitude,Longitude";
         String jsonInput = """
             {
               "contents": [
