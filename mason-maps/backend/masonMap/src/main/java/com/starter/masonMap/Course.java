@@ -22,13 +22,8 @@ public class Course {
     private int credits;
     private int CRN;
     private double location;
-    private int timeHour;
+    private int timeHour; //store in military time to avoid AM PM errors
+    private int timeMin;
+
     private List<String> date;
-
-
-
-
-    public Course(){
-        
-    }
 }
