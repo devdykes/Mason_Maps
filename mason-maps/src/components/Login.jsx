@@ -1,6 +1,23 @@
+import api from "../api/axiosConfig"
+
 import React, { useState } from 'react';
 
-const Login = ({ onLogin }) => {
+const AuthContext = React.createContext()
+
+export function AuthProvider(props) {
+  const [authUser, setAuthUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+
+  const value = {
+    authUser,
+    setAuthUser,
+    isLoggedIn,
+    setIsLoggedIn
+  }
+}
+
+
+const Login = ({ onLogin }) => { 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -8,22 +25,23 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
 
     try {
-      const res = await fetch('http://localhost:8080/api/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-      });
+      const res = await api.post('/api/user/login',
+        JSON.stringify({ user: username, password: password }),
+        {
+          headers: { 'Content-Type': 'application/json' }
+        }
+      );
+      console.log(username + " " + password);
+      console.log(res.data);
 
-      if (res.ok) {
-        const data = await res.json();
-        localStorage.setItem('token', data.token);
-        onLogin(data.token);
-      } else {
-        alert('Login failed. Please check your username and password.');
-      }
+      const data = await res.data;
+      console.log(data);
+      localStorage.setItem('token', data.token);
+      onLogin(data.token);
+      
     } catch (err) {
       console.error('Login error:', err);
-      alert('An error occurred. Try again later.');
+      alert('Login failed');
     }
   };
 
