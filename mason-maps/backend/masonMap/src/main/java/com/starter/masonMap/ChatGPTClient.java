@@ -1,55 +1,72 @@
 package com.starter.masonMap;
 
-import java.io.*;
+
+    import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ChatGPTClient {
-    public static String chatGPT(String prompt) {
-        String url = "https://api.openai.com/v1/chat/completions";
-        String apiKey = System.getenv("API_KEY");;
-        String model = "gpt-3.5-turbo";
- 
-        try {
-            URL obj = new URL(url);
-            HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", "Bearer " + apiKey);
-            connection.setRequestProperty("Content-Type", "application/json");
- 
-            // The request body
-            String body = "{\"model\": \"" + model + "\", \"messages\": [{\"role\": \"user\", \"content\": \"" + prompt + "\"}]}";
-            connection.setDoOutput(true);
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-            writer.write(body);
-            writer.flush();
-            writer.close();
- 
-            // Response from ChatGPT
-            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+
+    public static String getGeminiResponse(String prompt) throws IOException {
+        String apiKey = "AIzaSyD4EeiZ44V_ufZ_pqHoha9959R1j52a72c";  // 🔐 Replace with your Gemini API key
+        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
+        prompt= prompt+"from the parsed text, find the meeting times of each class, categorize them by the day they meet, then get the longitude and latitude of the location where each class is held and return the data in a easy to pasre format, only give the data no other response not json format but comma separated values";
+        prompt+="Day,Course,Time,Building,Room,Latitude,Longitude. Enssure it fits that format";
+        String jsonInput = """
+            {
+              "contents": [
+                {
+                  "parts": [
+                    {
+                      "text": "%s"
+                    }
+                  ]
+                }
+              ]
+            }
+            """.formatted(prompt);
+
+        URL url = new URL(endpoint);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json");
+        conn.setDoOutput(true);
+
+        try (OutputStream os = conn.getOutputStream()) {
+            os.write(jsonInput.getBytes(StandardCharsets.UTF_8));
+        }
+
+        StringBuilder response = new StringBuilder();
+        try (BufferedReader reader = new BufferedReader(
+                new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
             String line;
- 
-            StringBuffer response = new StringBuffer();
- 
-            while ((line = br.readLine()) != null) {
+            while ((line = reader.readLine()) != null) {
                 response.append(line);
             }
-            br.close();
- 
-            // calls the method to extract the message.
-            return extractMessageFromJSONResponse(response.toString());
- 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-    }
- 
-    public static String extractMessageFromJSONResponse(String response) {
-        int start = response.indexOf("content")+ 11;
- 
-        int end = response.indexOf("\"", start);
- 
-        return response.substring(start, end);
- 
+
+        return extractTextFromGeminiResponse(response.toString()); // returns raw JSON response
+
+
+    }/*!SECTION
+    { "candidates": [ { "content": { "parts": [ { "text": "Test test 1234\n" } ], "role": "model" }, "finishReason": "STOP", "avgLogprobs": -1.5325553249567747e-05 } ], "usageMetadata": { "promptTokenCount": 11, "candidatesTokenCount": 8, "totalTokenCount": 19, "promptTokensDetails": [ { "modality": "TEXT", "tokenCount": 11 } ], "candidatesTokensDetails": [ { "modality": "TEXT", "tokenCount": 8 } ] }, "modelVersion": "gemini-2.0-flash"}
+    
+    */
+    public static String extractTextFromGeminiResponse(String jsonResponse) {
+        // Regular expression to match the "text" value inside the JSON structure
+        String regex = "\"text\"\\s*:\\s*\"([^\"]+)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(jsonResponse);
+        
+        if (matcher.find()) {
+            // Return the captured text (the content inside the quotes after "text")
+            return (matcher.group(1).replace("\\n",""));
+        }
+        
+        return "";
+        
     }
 }
